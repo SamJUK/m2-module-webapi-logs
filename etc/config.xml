@@ -12,7 +12,6 @@
                 <enabled>1</enabled>
                 <secret_mode>1</secret_mode>
                 <secret_words>Cookie
-User-Agent
 Authorization
 username
 password

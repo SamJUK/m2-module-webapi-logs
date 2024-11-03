@@ -175,12 +175,27 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Requestor IP</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="resizeDefaultWidth" xsi:type="string">100</item>
                     <item name="editor" xsi:type="string">select</item>
                     <item name="source" xsi:type="string">requestor_ip</item>
                     <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </column>
+        <column name="requestor_useragent">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">GhostUnicorns\WebapiLogs\Model\Config\Source\RequestorUserAgent</item>
+                <item name="config" xsi:type="array">
+                    <item name="resizeDefaultWidth" xsi:type="string">100</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">User Agent</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">requestor_useragent</item>
+                    <item name="sortOrder" xsi:type="number">31</item>
                 </item>
             </argument>
         </column>

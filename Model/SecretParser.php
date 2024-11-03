@@ -32,6 +32,11 @@ class SecretParser
         return '***.***.***.***';
     }
 
+    public function parseUserAgent(): string
+    {
+        return "***************";
+    }
+
     /**
      * @param string $header
      * @return string
