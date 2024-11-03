@@ -39,6 +39,36 @@
                     </depends>
                     <validate>validate-number validate-greater-than-zero</validate>
                 </field>
+
+                <field id="disable_ajax" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Disable AJAX</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Only log API calls, nothing from the browser]]></comment>
+                </field>
+                
+            </group>
+            <group id="whitelist" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Whitelists</label>
+
+                <field id="useragents" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>User Agents</label>
+                    <comment><![CDATA[A list of useragents, separated by a simple new line. Blank to disable]]></comment>
+                </field>
+
+                <field id="ips" translate="label" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>IP Addresses</label>
+                    <comment><![CDATA[A list of IP Addresses, separated by a simple new line. Blank to disable]]></comment>
+                </field>
+
+                <field id="urls" translate="label" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>URLs</label>
+                    <comment><![CDATA[A list of URL partials, separated by a simple new line. Blank to disable]]></comment>
+                </field>
+
+                <field id="method" translate="label" type="multiselect" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>HTTP Method</label>
+                    <source_model>GhostUnicorns\WebapiLogs\Model\Config\Source\HTTPMethods</source_model>
+                </field>
             </group>
         </section>
     </system>

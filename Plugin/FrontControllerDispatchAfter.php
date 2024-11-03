@@ -10,6 +10,7 @@ namespace GhostUnicorns\WebapiLogs\Plugin;
 
 use GhostUnicorns\WebapiLogs\Model\Config;
 use GhostUnicorns\WebapiLogs\Model\LogHandle;
+use GhostUnicorns\WebapiLogs\Model\Whitelist;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Webapi\Controller\Rest;
@@ -32,18 +33,26 @@ class FrontControllerDispatchAfter
     private $logHandle;
 
     /**
+     * @var Whitelist
+     */
+    private $whitelist;
+
+    /**
      * @param Config $config
      * @param DateTime $date
      * @param LogHandle $logHandle
+     * @param Whitelist $whitelist
      */
     public function __construct(
         Config $config,
         DateTime $date,
-        LogHandle $logHandle
+        LogHandle $logHandle,
+        Whitelist $whitelist
     ) {
         $this->config = $config;
         $this->date = $date;
         $this->logHandle = $logHandle;
+        $this->whitelist = $whitelist;
     }
 
     /**
@@ -54,7 +63,7 @@ class FrontControllerDispatchAfter
      */
     public function afterDispatch(Rest $subject, $result, RequestInterface $request)
     {
-        if ($this->config->isEnabled()) {
+        if ($this->config->isEnabled() && $this->whitelist->shouldLog($request)) {
             $exceptions = $result->getException();
 
             if (!empty($exceptions)) {
