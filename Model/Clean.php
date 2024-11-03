@@ -11,7 +11,6 @@ namespace GhostUnicorns\WebapiLogs\Model;
 use DateTime;
 use Exception;
 use GhostUnicorns\WebapiLogs\Model\Log\Logger;
-use GhostUnicorns\WebapiLogs\Model\ResourceModel\Entity\LogCollectionFactory;
 use GhostUnicorns\WebapiLogs\Model\ResourceModel\LogResourceModel;
 
 class Clean
@@ -27,11 +26,6 @@ class Clean
     private $logger;
 
     /**
-     * @var LogCollectionFactory
-     */
-    private $logCollectionFactory;
-
-    /**
      * @var ResourceModel\LogResourceModel
      */
     private $logResourceModel;
@@ -39,18 +33,15 @@ class Clean
     /**
      * @param Config $config
      * @param Logger $logger
-     * @param LogCollectionFactory $logCollectionFactory
      * @param LogResourceModel $logResourceModel
      */
     public function __construct(
         Config $config,
         Logger $logger,
-        LogCollectionFactory $logCollectionFactory,
         LogResourceModel $logResourceModel
     ) {
         $this->config = $config;
         $this->logger = $logger;
-        $this->logCollectionFactory = $logCollectionFactory;
         $this->logResourceModel = $logResourceModel;
     }
 
@@ -66,26 +57,12 @@ class Clean
         $this->logger->info(__('Start webapi logs clean'));
         $hours = $this->config->getCleanOlderThanHours();
         $datetime = new DateTime('-' . $hours . ' hour');
-        $page = 1;
 
-        $collection = $this->logCollectionFactory->create();
-        $collection = $collection->addFieldToSelect(LogResourceModel::LOG_ID)
-                                 ->addFieldToFilter(LogResourceModel::CREATED_AT, ['lt' => $datetime])
-                                 ->setPageSize(2);
-
-        $pageCount = $collection->getLastPageNumber();
-        $currentPage = 1;
-        $tot = 0;
-        while ($currentPage <= $pageCount) {
-            $collection->setCurPage($currentPage);
-            foreach ($collection as $row) {
-                $this->logResourceModel->delete($row);
-                $tot++;
-            }
-            $collection->clear();
-            $currentPage++;
-        }
-
-        $this->logger->info(__('End webapi logs clean. Deleted %1 elements.', $tot));
+        $deletedRows = $this->logResourceModel->getConnection()
+            ->delete(
+                $this->logResourceModel->getMainTable(),
+                [LogResourceModel::CREATED_AT . " < ?", $datetime]
+            );
+        $this->logger->info(__('End webapi logs clean. Deleted %1 elements.', $deletedRows));
     }
 }
